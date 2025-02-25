@@ -1,11 +1,9 @@
 import axios from "axios";
-const BASE_URL = "https://api2.shop.com/AffiliatePublisherNetwork/v2";
 
 export const searchProducts = async (query: string, page = 0) => {  
-    var params = {
+    var params: any = {
         publisherId: "TEST",
         locale: "en_US",
-        term: query,
         start: page * 15, 
         perPage: 15
     }
@@ -14,7 +12,7 @@ export const searchProducts = async (query: string, page = 0) => {
     }
     try {
         console.log("calling searchProducts...")
-      const response = await axios.get(`${BASE_URL}/products`, {
+      const response = await axios.get(`${process.env.EXPO_PUBLIC_SHOP_BASE_URL}/products`, {
         params,
         headers: {
           API_KEY: process.env.EXPO_PUBLIC_SHOP_API_KEY 
@@ -27,18 +25,21 @@ export const searchProducts = async (query: string, page = 0) => {
       return { products: [] };
     }
   };
-export const getProductDetails = async (productId: string) => {
+  
+export const getProductDetails = async (productId: number) => {
   try {
-    const response = await axios.get(`${BASE_URL}/product/v1/details`, {
+    console.log("calling getProductDetails...")
+    const response = await axios.get(`${process.env.EXPO_PUBLIC_SHOP_BASE_URL}/products/${productId}`, {
       params: { 
         publisherId: "TEST",
         locale: "en_US",
-        productId
+        productId: String(productId)
      },
       headers: {
-        API_KEY: `${process.env.EXPO_PUBLIC_SHOP_API_KEY}` 
+        API_KEY: process.env.EXPO_PUBLIC_SHOP_API_KEY
      }
     });
+    console.info("done calling getProductDetails...")
     return response.data;
   } catch (error) {
     console.error("Error fetching product details:", error);

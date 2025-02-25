@@ -14,14 +14,14 @@ import { styles } from "./styles";
 import { Product } from "../../types/Product";
 import { HomeProps } from "../../types/RootStackParamList";
 import { useDebounce } from "../../utils/useDebounce";
-import { Ionicons } from "@expo/vector-icons"; // Import for icons
+import { Ionicons } from "@expo/vector-icons";
 
 export default function HomeScreen({ navigation }: HomeProps) {
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 500);
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [firstLoad, setFirstLoad] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
 
@@ -39,7 +39,11 @@ export default function HomeScreen({ navigation }: HomeProps) {
 
   const fetchProducts = async (pageNumber: number, reset = false) => {
     if (!hasMore && !reset) return;
-    setLoading(true);
+    if (reset) {
+      setLoading(true);
+    } else {
+      setLoadingMore(true)
+    }
     
     const results = await searchProducts(debouncedQuery, pageNumber);
     if (results) {
@@ -47,12 +51,12 @@ export default function HomeScreen({ navigation }: HomeProps) {
       setHasMore(results.products.length > 0);
     }
     
+    setLoadingMore(false);
     setLoading(false);
-    setFirstLoad(false);
   };
 
   const loadMore = () => {
-    if (!loading && hasMore) {
+    if (!loadingMore && hasMore) {
       setPage(prev => prev + 1);
       fetchProducts(page + 1);
     }
@@ -60,7 +64,7 @@ export default function HomeScreen({ navigation }: HomeProps) {
 
   return (
     <View style={styles.container}>
-      {/* Search Input */}
+      {/* Search */}
       <View style={styles.searchContainer}>
         <Ionicons name="search" size={20} color="#888" style={styles.searchIcon} />
         <TextInput 
@@ -77,8 +81,7 @@ export default function HomeScreen({ navigation }: HomeProps) {
         )}
       </View>
 
-      {/* Full-screen loader on first load */}
-      {firstLoad ? (
+      {loading ? (
         <View style={styles.fullScreenLoader}>
           <ActivityIndicator size="large" color="#007AFF" />
         </View>
@@ -89,7 +92,7 @@ export default function HomeScreen({ navigation }: HomeProps) {
           renderItem={({ item }) => <ProductCard product={item} navigation={navigation} />}
           onEndReached={loadMore}
           onEndReachedThreshold={0.5}
-          ListFooterComponent={loading ? <ActivityIndicator style={styles.loader} size="small" color="#007AFF" /> : null}
+          ListFooterComponent={loadingMore ? <ActivityIndicator style={styles.loader} size="small" color="#007AFF" /> : null}
         />
       )}
     </View>
