@@ -7,8 +7,10 @@ EXPO_PUBLIC_SHOP_BASE_URL=https://api2.shop.com/AffiliatePublisherNetwork/v2
 EXPO_PUBLIC_SHOP_API_KEY=your_api_key
 ```
 
+To run the project
+
 Run Project
 
 ```
-npx start
+npx expo start
 ```

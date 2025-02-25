@@ -2,14 +2,16 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { ImageSize } from "./Image";
 
 export type RootStackParamList = {
-  Home: undefined;
+  Products: undefined;
   ProductDetail: { 
     id: number,
     largeImageSize: ImageSize | undefined,
     name: string,
     shortDescription: string
    };
+   Cart: undefined;
 };
 
 export type DetailProps = StackScreenProps<RootStackParamList, "ProductDetail">;
-export type HomeProps = StackScreenProps<RootStackParamList, "Home">;
+export type ProductListProps = StackScreenProps<RootStackParamList, "Products">;
+export type CartProps = StackScreenProps<RootStackParamList, "Cart">;

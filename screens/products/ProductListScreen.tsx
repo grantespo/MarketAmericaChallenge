@@ -12,11 +12,11 @@ import { searchProducts } from "../../services/products";
 import ProductCard from "../../components/products/ProductCard";
 import { styles } from "./styles";
 import { Product } from "../../types/Product";
-import { HomeProps } from "../../types/RootStackParamList";
+import { ProductListProps } from "../../types/RootStackParamList";
 import { useDebounce } from "../../utils/useDebounce";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function HomeScreen({ navigation }: HomeProps) {
+export default function ProductListScreen({ navigation }: ProductListProps) {
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 500);
   const [products, setProducts] = useState<Product[]>([]);
@@ -93,6 +93,11 @@ export default function HomeScreen({ navigation }: HomeProps) {
           onEndReached={loadMore}
           onEndReachedThreshold={0.5}
           ListFooterComponent={loadingMore ? <ActivityIndicator style={styles.loader} size="small" color="#007AFF" /> : null}
+          removeClippedSubviews={true} // Improves performance
+          initialNumToRender={10} // Render only a few items first
+          maxToRenderPerBatch={10} // Renders items in batches
+          windowSize={10} // Keeps fewer items in memory
+          updateCellsBatchingPeriod={100} // Reduces CPU load
         />
       )}
     </View>

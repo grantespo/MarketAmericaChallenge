@@ -43,24 +43,24 @@ export const styles = StyleSheet.create({
     stockContainer: {
         alignItems: "flex-start",
     },
-    skuStatus: {
-      paddingHorizontal: 6,
-      paddingVertical: 4,
-      borderRadius: 4,
-      alignSelf: "flex-start",
-    },
-    inStock: {
-      backgroundColor: "#D4EDDA",
-    },
-    outOfStock: {
-      backgroundColor: "#F8D7DA",
-    },
-    skuStatusText: {
-      fontSize: 12,
-      fontWeight: "600",
-      color: "#333",
-    },
-    addButton: {
+    qtyView: {
+        flexDirection: "row",
+        alignItems: "center",
+        borderRadius: 6,
+        paddingHorizontal: 5,
+        paddingVertical: 5,
+        marginTop: 5,
+      },
+      qtyButton: {
+        backgroundColor: "#f4f4f4",
+        borderRadius: 6,
+        padding: 10,
+      },
+      qtyText: {
+        fontSize: 16,
+        marginHorizontal: 10,
+      },
+    removeButton: {
         flexDirection: "row",
         alignItems: "center",
         paddingHorizontal: 12,
@@ -68,9 +68,10 @@ export const styles = StyleSheet.create({
         paddingVertical: 6,
         borderRadius: 6,
         alignSelf: "flex-end",
-        backgroundColor: "#007AFF"
+        marginBottom: 5,
+        backgroundColor: "red"
       },
-      addButtonText: {
+      removeButtonText: {
         color: "#fff",
         fontSize: 14,
         fontWeight: "600",
