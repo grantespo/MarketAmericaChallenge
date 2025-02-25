@@ -3,13 +3,11 @@ import {
   View, 
   Text, 
   FlatList, 
-  ActivityIndicator, 
   ScrollView, 
   Dimensions
 } from "react-native";
-import { Image } from "expo-image";
 import { getProductDetails } from "../../../services/products";
-import { DetailProps } from "../../../types/RootStackParamList";
+import { DetailProps } from "../../../navigation/RootStackParamList";
 import { mapProductOptionsToSkus, Product } from "../../../types/Product";
 import { styles } from "./styles";
 import SkuCard from "../../../components/skus/SkuCard";
@@ -17,6 +15,8 @@ import { Sku } from "../../../types/Sku";
 import { decodeTrademarkSymbols } from "../../../utils/decodeTrademarkSymbols";
 import { calculateDynamicImageHeight } from "../../../utils/calculateDynamicImageHeight";
 import ReviewView from "../../../components/products/review/ReviewView";
+import LargeLoadingSpinner from "../../../components/common/LargeLoadingSpinner";
+import ProductImage from "../../../components/common/ProductImage";
 
 export default function ProductDetail({ route }: DetailProps) {
   const { id, name, shortDescription, largeImageSize } = route.params;
@@ -40,7 +40,12 @@ export default function ProductDetail({ route }: DetailProps) {
     <ScrollView style={styles.container}>
       {
         largeImageSize ? (
-          <Image  source={{ uri: largeImageSize.url }} style={{...styles.productImage, height: calculateDynamicImageHeight(largeImageSize.width, largeImageSize.height, screenWidth)}} contentFit="cover" />
+          <ProductImage 
+            skuImage={largeImageSize.url} 
+            largeImage={true}
+            width={screenWidth} 
+            height={calculateDynamicImageHeight(largeImageSize.width, largeImageSize.height, screenWidth)}>
+          </ProductImage>
         ) : (null)
       }
 
@@ -49,9 +54,7 @@ export default function ProductDetail({ route }: DetailProps) {
         <Text style={styles.shortDescription}>{decodeTrademarkSymbols(shortDescription)}</Text>
 
         {loading ? (
-          <View style={styles.loaderContainer}>
-            <ActivityIndicator style={{marginTop: 30}} size="large" color="#007AFF" />
-          </View>
+          <LargeLoadingSpinner fullScreen={false} marginTop={30}/>
         ) : (
           <>
             <ReviewView reviewData={product?.reviewData}></ReviewView>

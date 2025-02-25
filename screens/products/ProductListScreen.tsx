@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { 
   View, 
-  TextInput, 
   FlatList, 
   ActivityIndicator, 
-  Keyboard, 
-  TouchableOpacity,
-  Text,
+  Text
 } from "react-native";
 import { searchProducts } from "../../services/products";
 import ProductCard from "../../components/products/ProductCard";
 import { styles } from "./styles";
 import { Product } from "../../types/Product";
-import { ProductListProps } from "../../types/RootStackParamList";
+import { ProductListProps } from "../../navigation/RootStackParamList";
 import { useDebounce } from "../../utils/useDebounce";
-import { Ionicons } from "@expo/vector-icons";
+import LargeLoadingSpinner from "../../components/common/LargeLoadingSpinner";
+import SearchBar from "../../components/common/SearchBar";
 
 export default function ProductListScreen({ navigation }: ProductListProps) {
   const [query, setQuery] = useState("");
@@ -30,11 +28,7 @@ export default function ProductListScreen({ navigation }: ProductListProps) {
   }, []);
 
   useEffect(() => {
-    if (debouncedQuery.trim() !== "") {
-      fetchProducts(0, true);
-    } else {
-      setProducts([]);
-    }
+    fetchProducts(0, true);
   }, [debouncedQuery]);
 
   const fetchProducts = async (pageNumber: number, reset = false) => {
@@ -64,29 +58,22 @@ export default function ProductListScreen({ navigation }: ProductListProps) {
 
   return (
     <View style={styles.container}>
-      {/* Search */}
-      <View style={styles.searchContainer}>
-        <Ionicons name="search" size={20} color="#888" style={styles.searchIcon} />
-        <TextInput 
-          placeholder="Search for products..." 
-          value={query} 
-          onChangeText={setQuery} 
-          onSubmitEditing={Keyboard.dismiss}
-          style={styles.searchInput} 
-        />
-        {query.length > 0 && (
-          <TouchableOpacity onPress={() => setQuery("")} style={styles.clearButton}>
-            <Text style={styles.clearText}>✕</Text>
-          </TouchableOpacity>
-        )}
-      </View>
+      <SearchBar 
+        query={query} 
+        placeholder="Search for products..."
+        setQuery={setQuery} />
 
       {loading ? (
-        <View style={styles.fullScreenLoader}>
-          <ActivityIndicator size="large" color="#007AFF" />
-        </View>
+        <LargeLoadingSpinner/>
       ) : (
-        <FlatList
+        products.length == 0 ? 
+        (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>No products found. Please try a different search query.</Text>
+        </View>
+        )
+        :
+        (<FlatList
           data={products}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => <ProductCard product={item} navigation={navigation} />}
@@ -98,7 +85,7 @@ export default function ProductListScreen({ navigation }: ProductListProps) {
           maxToRenderPerBatch={10} // Renders items in batches
           windowSize={10} // Keeps fewer items in memory
           updateCellsBatchingPeriod={100} // Reduces CPU load
-        />
+        />)
       )}
     </View>
   );

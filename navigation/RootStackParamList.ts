@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { ImageSize } from "./Image";
+import { ImageSize } from "../types/Image";
 
 export type RootStackParamList = {
   Products: undefined;

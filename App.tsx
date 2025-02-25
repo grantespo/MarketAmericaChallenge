@@ -2,7 +2,7 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import RootNavigationStack from "./navigation/RootNavigationStack";
-import { CartProvider } from "./contexts/CartContext";
+import { CartProvider } from "./contexts/CardProvider";
 
 export default function App() {
   return (

@@ -1,13 +1,19 @@
 import React from "react";
 import { View, Text, FlatList, TouchableOpacity, Alert } from "react-native";
-import { useCart } from "../../contexts/CartContext";
+import { useCart } from "../../contexts/CardProvider";
 import styles from "./styles";
-import { CartProps } from "../../types/RootStackParamList";
+import { CartProps } from "../../navigation/RootStackParamList";
 import * as LocalAuthentication from "expo-local-authentication";
 import CartSkuCard from "../../components/cart/CartSkuCard";
 
 export default function CartScreen({ navigation }: CartProps) {
   const { cartItems, clearCart } = useCart();
+
+  const totalPrice = cartItems
+    .reduce((sum, [sku, qty]) => sum + sku.price * qty, 0)
+    .toFixed(2)
+    const totalQty = cartItems
+    .reduce((sum, [_, qty]) => sum + qty, 0)
 
   const handlePurchase = async () => {
     const result = await LocalAuthentication.authenticateAsync({
@@ -27,20 +33,25 @@ export default function CartScreen({ navigation }: CartProps) {
     <View style={styles.container}>
       {cartItems.length === 0 ? (
         <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>No items have been added to cart</Text>
+          <Text style={styles.emptyText}>Cart is empty</Text>
         </View>
       ) : (
         <>
           <FlatList
+            style={{marginTop: 12}}
             data={cartItems}
             keyExtractor={(item, index) => `${item[0].id}-${index}`}
             renderItem={({ item }) => <CartSkuCard sku={item[0]} />}
           />
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.buyButton} onPress={handlePurchase}>
-              <Text style={styles.buyButtonText}>Buy</Text>
-            </TouchableOpacity>
-          </View>
+          {
+            totalQty > 0 ? (
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.buyButton} onPress={handlePurchase}>
+                  <Text style={styles.buyButtonText}>{`Buy ($${totalPrice})`}</Text>
+                </TouchableOpacity>
+            </View>) 
+            : (null)
+          }
         </>
       )}
     </View>

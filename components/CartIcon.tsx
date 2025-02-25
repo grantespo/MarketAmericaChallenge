@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useCart } from "../contexts/CartContext";
+import { useCart } from "../contexts/CardProvider";
 
 export const CartIcon = ({ navigation }: { navigation: any }) => {
   const { cartItems } = useCart();

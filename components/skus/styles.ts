@@ -14,10 +14,9 @@ export const styles = StyleSheet.create({
       shadowRadius: 4,
       elevation: 3,
     },
-    skuImage: {
-      width: 80,
-      height: 80,
-      borderRadius: 8,
+    imageContainer: {
+        justifyContent: "center",
+        alignItems: "center",
     },
     skuDetails: {
       flex: 1,

@@ -13,11 +13,6 @@ export const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 3,
       },
-      image: {
-        width: 80,
-        height: 80,
-        borderRadius: 8,
-      },
       details: {
         flex: 1,
         marginLeft: 12,
