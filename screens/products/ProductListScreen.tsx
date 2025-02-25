@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { 
+  Alert,
   View, 
   FlatList, 
   ActivityIndicator, 
@@ -25,10 +26,6 @@ export default function ProductListScreen({ navigation }: ProductListProps) {
 
   useEffect(() => {
     fetchProducts(0, true);
-  }, []);
-
-  useEffect(() => {
-    fetchProducts(0, true);
   }, [debouncedQuery]);
 
   const fetchProducts = async (pageNumber: number, reset = false) => {
@@ -41,8 +38,12 @@ export default function ProductListScreen({ navigation }: ProductListProps) {
     
     const results = await searchProducts(debouncedQuery, pageNumber);
     if (results) {
-      setProducts(reset ? results.products : [...products, ...results.products]);
-      setHasMore(results.products.length > 0);
+      if (results.error) {
+        Alert.alert("Error", results.error);
+      } else if (results.products) {
+        setProducts(reset ? results.products : [...products, ...results.products]);
+        setHasMore(results.products.length > 0);
+      }
     }
     
     setLoadingMore(false);

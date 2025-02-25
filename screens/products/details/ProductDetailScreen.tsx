@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { 
+  Alert,
   View, 
   Text, 
   FlatList, 
@@ -26,9 +27,13 @@ export default function ProductDetail({ route }: DetailProps) {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const data = await getProductDetails(id);
-      setProduct(data);
-      setSkus(mapProductOptionsToSkus(data))
+      const results = await getProductDetails(id);
+      if (results.error) {
+        Alert.alert("Error", results.error);
+      } else {
+        setProduct(results);
+        setSkus(mapProductOptionsToSkus(results))
+      }
       setLoading(false);
     };
     fetchProduct();
