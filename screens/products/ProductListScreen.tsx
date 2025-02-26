@@ -14,6 +14,7 @@ import SearchBar from '../../components/common/SearchBar';
 import ProductCard from '../../components/products/ProductCard';
 import { searchProducts } from '../../services/products';
 import { Product } from '../../types/Product';
+import { removeDuplicates } from '../../utils/removeDuplicates';
 import { useDebounce } from '../../utils/useDebounce';
 
 export default function ProductListScreen() {
@@ -38,9 +39,13 @@ export default function ProductListScreen() {
         Alert.alert('Error', results.error);
         setHasError(true); // Block further API calls after an error
       } else if (results?.products) {
-        setProducts(
-          page === 0 ? results.products : [...products, ...results.products],
-        );
+        setProducts((prevProducts) => {
+          const merged =
+            pageNumber === 0
+              ? results.products
+              : [...prevProducts, ...results.products];
+          return removeDuplicates(merged, 'id');
+        });
         setHasMore(results.products.length > 0);
         setHasError(false);
       }
@@ -79,8 +84,6 @@ export default function ProductListScreen() {
         setQuery={(q) => {
           setLoading(true);
           if (q === '') {
-            setPage(0);
-            setProducts([]);
             Keyboard.dismiss();
           }
           setQuery(q);

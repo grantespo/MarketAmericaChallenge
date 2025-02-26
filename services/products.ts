@@ -3,14 +3,14 @@ import axios from 'axios';
 const TIMEOUT = 10000; // 10 seconds
 
 export const searchProducts = async (query: string, page = 0) => {
+  const perPage = 20;
   console.log('calling searchProducts...');
   const params: any = {
     publisherId: 'TEST',
     locale: 'en_US',
-    start: page * 15,
-    perPage: 15,
+    start: page * perPage,
+    perPage,
   };
-
   if (query.trim().length > 0) {
     params.term = query;
   }

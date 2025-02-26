@@ -107,7 +107,6 @@ I built a mobile app where users can see products from the SHOP.com API. Each ro
  ┣ 📂 __tests__          # Tests
  ```
 
-
 ### Limitations 
 
 - No checkout system. Purchases are simulated with an alert.
@@ -122,3 +121,21 @@ I built a mobile app where users can see products from the SHOP.com API. Each ro
 - Debounced Search - Prevents excessive API calls by delaying execution while the user is typing and provides a better user experience without the need for a search button
 - Image caching
 - Shopping cart feature w/ simulated checkout
+
+### API Issues
+
+During QA, I discovered an issue with the product search endpoint. Specifically, the same products are included in the responses of different pages when using `term` and paging query params.
+
+e.g This product is shown on both of these pages:
+
+```
+"id": 915778699,
+```
+
+https://api2.shop.com/AffiliatePublisherNetwork/v2/products?publisherId=Test&locale=en_US&page=1&term=A&start=20&perPage=20
+
+https://api2.shop.com/AffiliatePublisherNetwork/v2/products?publisherId=Test&locale=en_US&page=2&term=A&start=40&perPage=20
+
+Interestingly, somtimes the product shows on these pages and sometimes it doesn't. It seems like the API is incosistantly sorting results.
+
+As a workaround, I'm filtering out duplicae ids for my products datasource in the app.
