@@ -1,5 +1,12 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Alert, View, FlatList, ActivityIndicator, Text } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  Alert,
+  View,
+  FlatList,
+  ActivityIndicator,
+  Text,
+  Keyboard,
+} from 'react-native';
 
 import { styles } from './styles';
 import LargeLoadingSpinner from '../../components/common/LargeLoadingSpinner';
@@ -14,23 +21,16 @@ export default function ProductListScreen() {
   const debouncedQuery = useDebounce(query, 500);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [hasError, setHasError] = useState(false);
 
-  const loadingMore = useMemo(() => {
-    return loading && page > 0;
-  }, [loading, page]);
-
   useEffect(() => {
-    fetchProducts(0, true);
+    fetchProducts(0);
   }, [debouncedQuery]);
 
-  const fetchProducts = async (pageNumber: number, reset = false) => {
-    if ((!hasMore || hasError) && !reset) return; // don't attempt to paginate if there are aren't more items or if a networking error occured
-
-    setLoading(true);
-
+  const fetchProducts = async (pageNumber: number) => {
     try {
       const results = await searchProducts(debouncedQuery, pageNumber);
 
@@ -39,7 +39,7 @@ export default function ProductListScreen() {
         setHasError(true); // Block further API calls after an error
       } else if (results?.products) {
         setProducts(
-          reset ? results.products : [...products, ...results.products],
+          page === 0 ? results.products : [...products, ...results.products],
         );
         setHasMore(results.products.length > 0);
         setHasError(false);
@@ -49,13 +49,16 @@ export default function ProductListScreen() {
       setHasError(true);
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
   };
 
   const loadMore = () => {
-    if (!loadingMore && hasMore && !hasError) {
+    if (!loading && !loadingMore && hasMore && !hasError) {
+      setLoadingMore(true);
       const nextPage = page + 1;
       setPage(nextPage);
+      setLoading(true);
       fetchProducts(nextPage);
     }
   };
@@ -73,7 +76,15 @@ export default function ProductListScreen() {
       <SearchBar
         query={query}
         placeholder="Search for products..."
-        setQuery={setQuery}
+        setQuery={(q) => {
+          setLoading(true);
+          if (q === '') {
+            setPage(0);
+            setProducts([]);
+            Keyboard.dismiss();
+          }
+          setQuery(q);
+        }}
       />
 
       {loading && !loadingMore ? (

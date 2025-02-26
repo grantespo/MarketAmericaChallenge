@@ -1,5 +1,5 @@
 import { render, waitFor } from '@testing-library/react-native';
-import { FlatList, Alert, ActivityIndicator } from 'react-native';
+import { FlatList, Alert, ActivityIndicator, Keyboard } from 'react-native';
 
 import { mockProduct, mockProductWithoutImage } from '../__mocks__/MockProduct';
 import ProductListScreen from '../screens/products/ProductListScreen';
@@ -24,6 +24,8 @@ jest.mock('../components/common/SearchBar', () => ({
   __esModule: true,
   default: jest.fn(() => null),
 }));
+
+jest.spyOn(Keyboard, 'dismiss');
 
 describe('ProductListScreen', () => {
   beforeEach(() => {

@@ -11,7 +11,7 @@ jest.mock('@expo/vector-icons', () => ({
 jest.spyOn(Keyboard, 'dismiss').mockImplementation(jest.fn());
 
 describe('SearchBar Component', () => {
-  const placeholderText = 'Search items';
+  const placeholderText = 'Search for products...';
 
   it('renders correctly with initial props', () => {
     const { getByPlaceholderText, queryByTestId } = render(
