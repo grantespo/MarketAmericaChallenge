@@ -14,5 +14,3 @@ export type RootStackParamList = {
 };
 
 export type DetailProps = StackScreenProps<RootStackParamList, 'ProductDetail'>;
-export type ProductListProps = StackScreenProps<RootStackParamList, 'Products'>;
-export type CartProps = StackScreenProps<RootStackParamList, 'Cart'>;

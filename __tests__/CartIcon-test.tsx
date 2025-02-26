@@ -4,6 +4,14 @@ import React from 'react';
 import { CartIcon } from '../components/CartIcon';
 import { useCart } from '../contexts/CartProvider';
 
+const mockNavigate = jest.fn();
+
+jest.mock('@react-navigation/native', () => ({
+  useNavigation: () => ({
+    navigate: mockNavigate,
+  }),
+}));
+
 jest.mock('@expo/vector-icons', () => ({
   Ionicons: 'Ionicons',
 }));
@@ -11,9 +19,6 @@ jest.mock('@expo/vector-icons', () => ({
 jest.mock('../contexts/CartProvider', () => ({
   useCart: jest.fn(),
 }));
-
-const mockNavigate = jest.fn();
-const mockNavigation = { navigate: mockNavigate };
 
 describe('CartIcon', () => {
   beforeEach(() => {
@@ -23,7 +28,7 @@ describe('CartIcon', () => {
   it('renders cart icon correctly with empty cart', () => {
     (useCart as jest.Mock).mockReturnValue({ cartItems: [] });
 
-    const { queryByText } = render(<CartIcon navigation={mockNavigation} />);
+    const { queryByText } = render(<CartIcon />);
 
     expect(queryByText('0')).toBeNull();
   });
@@ -36,7 +41,7 @@ describe('CartIcon', () => {
       ],
     });
 
-    const { getByText } = render(<CartIcon navigation={mockNavigation} />);
+    const { getByText } = render(<CartIcon />);
 
     expect(getByText('5')).toBeTruthy();
   });
@@ -44,7 +49,7 @@ describe('CartIcon', () => {
   it('calls navigation.navigate when pressed', () => {
     (useCart as jest.Mock).mockReturnValue({ cartItems: [] });
 
-    const { getByTestId } = render(<CartIcon navigation={mockNavigation} />);
+    const { getByTestId } = render(<CartIcon />);
 
     fireEvent.press(getByTestId('cart-icon'));
 

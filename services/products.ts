@@ -1,6 +1,9 @@
 import axios from 'axios';
 
+const TIMEOUT = 10000; // 10 seconds
+
 export const searchProducts = async (query: string, page = 0) => {
+  console.log('calling searchProducts...');
   const params: any = {
     publisherId: 'TEST',
     locale: 'en_US',
@@ -13,7 +16,6 @@ export const searchProducts = async (query: string, page = 0) => {
   }
 
   try {
-    console.log('calling searchProducts...');
     const response = await axios.get(
       `${process.env.EXPO_PUBLIC_SHOP_BASE_URL}/products`,
       {
@@ -21,6 +23,7 @@ export const searchProducts = async (query: string, page = 0) => {
         headers: {
           API_KEY: process.env.EXPO_PUBLIC_SHOP_API_KEY,
         },
+        timeout: TIMEOUT,
       },
     );
     console.info('done calling searchProducts...');
@@ -32,7 +35,6 @@ export const searchProducts = async (query: string, page = 0) => {
 
 export const getProductDetails = async (productId: number) => {
   try {
-    console.log('calling getProductDetails...');
     const response = await axios.get(
       `${process.env.EXPO_PUBLIC_SHOP_BASE_URL}/products/${productId}`,
       {
@@ -44,9 +46,9 @@ export const getProductDetails = async (productId: number) => {
         headers: {
           API_KEY: process.env.EXPO_PUBLIC_SHOP_API_KEY,
         },
+        timeout: TIMEOUT, // Add timeout here
       },
     );
-    console.info('done calling getProductDetails...');
     return response.data;
   } catch (error) {
     return handleApiError(error);
@@ -54,8 +56,6 @@ export const getProductDetails = async (productId: number) => {
 };
 
 function handleApiError(error: any) {
-  console.error('API Error:', error);
-
   let errorMessage = 'Something went wrong. Please try again later.';
   const status: number = error.response?.status;
   if (status) {

@@ -1,56 +1,62 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Alert, View, FlatList, ActivityIndicator, Text } from 'react-native';
 
 import { styles } from './styles';
 import LargeLoadingSpinner from '../../components/common/LargeLoadingSpinner';
 import SearchBar from '../../components/common/SearchBar';
 import ProductCard from '../../components/products/ProductCard';
-import { ProductListProps } from '../../navigation/RootStackParamList';
 import { searchProducts } from '../../services/products';
 import { Product } from '../../types/Product';
 import { useDebounce } from '../../utils/useDebounce';
 
-export default function ProductListScreen({ navigation }: ProductListProps) {
+export default function ProductListScreen() {
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, 500);
   const [products, setProducts] = useState<Product[]>([]);
-  const [loadingMore, setLoadingMore] = useState(false);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
+  const [hasError, setHasError] = useState(false);
+
+  const loadingMore = useMemo(() => {
+    return loading && page > 0;
+  }, [loading, page]);
 
   useEffect(() => {
     fetchProducts(0, true);
   }, [debouncedQuery]);
 
   const fetchProducts = async (pageNumber: number, reset = false) => {
-    if (!hasMore && !reset) return;
-    if (reset) {
-      setLoading(true);
-    } else {
-      setLoadingMore(true);
-    }
+    if ((!hasMore || hasError) && !reset) return; // don't attempt to paginate if there are aren't more items or if a networking error occured
 
-    const results = await searchProducts(debouncedQuery, pageNumber);
-    if (results) {
-      if (results.error) {
+    setLoading(true);
+
+    try {
+      const results = await searchProducts(debouncedQuery, pageNumber);
+
+      if (results?.error) {
         Alert.alert('Error', results.error);
-      } else if (results.products) {
+        setHasError(true); // Block further API calls after an error
+      } else if (results?.products) {
         setProducts(
           reset ? results.products : [...products, ...results.products],
         );
         setHasMore(results.products.length > 0);
+        setHasError(false);
       }
+    } catch (e: any) {
+      Alert.alert('Error', e?.message ?? 'Uknown Error');
+      setHasError(true);
+    } finally {
+      setLoading(false);
     }
-
-    setLoadingMore(false);
-    setLoading(false);
   };
 
   const loadMore = () => {
-    if (!loadingMore && hasMore) {
-      setPage((prev) => prev + 1);
-      fetchProducts(page + 1);
+    if (!loadingMore && hasMore && !hasError) {
+      const nextPage = page + 1;
+      setPage(nextPage);
+      fetchProducts(nextPage);
     }
   };
 
@@ -70,7 +76,7 @@ export default function ProductListScreen({ navigation }: ProductListProps) {
         setQuery={setQuery}
       />
 
-      {loading ? (
+      {loading && !loadingMore ? (
         <LargeLoadingSpinner />
       ) : products.length === 0 ? (
         <View style={styles.emptyContainer}>
@@ -82,9 +88,7 @@ export default function ProductListScreen({ navigation }: ProductListProps) {
         <FlatList
           data={products}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <ProductCard product={item} navigation={navigation} />
-          )}
+          renderItem={({ item }) => <ProductCard product={item} />}
           onEndReached={loadMore}
           onEndReachedThreshold={0.5}
           ListFooterComponent={renderFooter}

@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import * as LocalAuthentication from 'expo-local-authentication';
 import React from 'react';
@@ -19,11 +20,18 @@ jest.mock('expo-local-authentication', () => ({
 
 jest.spyOn(Alert, 'alert');
 
-const mockNavigation = { pop: jest.fn() };
+jest.mock('@react-navigation/native');
+
+const mockNavigate = jest.fn();
+const mockPopToTop = jest.fn();
 
 describe('CartScreen Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    (useNavigation as jest.Mock).mockReturnValue({
+      navigate: mockNavigate,
+      popToTop: mockPopToTop,
+    });
   });
 
   it('renders empty cart message when cartItems is empty', () => {
@@ -32,9 +40,7 @@ describe('CartScreen Component', () => {
       clearCart: mockClearCart,
     });
 
-    const { getByText } = render(
-      <CartScreen navigation={mockNavigation as any} route={{} as any} />,
-    );
+    const { getByText } = render(<CartScreen />);
     expect(getByText('Cart is empty')).toBeTruthy();
   });
 
@@ -47,9 +53,7 @@ describe('CartScreen Component', () => {
       clearCart: mockClearCart,
     });
 
-    const { getByText } = render(
-      <CartScreen navigation={mockNavigation as any} route={{} as any} />,
-    );
+    const { getByText } = render(<CartScreen />);
 
     expect(getByText('Buy ($25.50)')).toBeTruthy();
   });
@@ -64,9 +68,7 @@ describe('CartScreen Component', () => {
       success: true,
     });
 
-    const { getByText } = render(
-      <CartScreen navigation={mockNavigation as any} route={{} as any} />,
-    );
+    const { getByText } = render(<CartScreen />);
 
     fireEvent.press(getByText('Buy ($10.00)'));
 
@@ -79,7 +81,7 @@ describe('CartScreen Component', () => {
         'Purchase successful!',
       );
       expect(mockClearCart).toHaveBeenCalled();
-      expect(mockNavigation.pop).toHaveBeenCalled();
+      expect(mockPopToTop).toHaveBeenCalled();
     });
   });
 
@@ -93,9 +95,7 @@ describe('CartScreen Component', () => {
       success: false,
     });
 
-    const { getByText } = render(
-      <CartScreen navigation={mockNavigation as any} route={{} as any} />,
-    );
+    const { getByText } = render(<CartScreen />);
 
     fireEvent.press(getByText('Buy ($10.00)'));
 
@@ -108,7 +108,7 @@ describe('CartScreen Component', () => {
         'Could not verify your identity.',
       );
       expect(mockClearCart).not.toHaveBeenCalled();
-      expect(mockNavigation.pop).not.toHaveBeenCalled();
+      expect(mockPopToTop).not.toHaveBeenCalled();
     });
   });
 });

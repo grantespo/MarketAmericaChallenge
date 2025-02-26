@@ -35,9 +35,7 @@ describe('ProductListScreen', () => {
 
     (searchProducts as jest.Mock).mockResolvedValue({ products: productsMock });
 
-    const { getByText } = render(
-      <ProductListScreen navigation={{} as any} route={{} as any} />,
-    );
+    const { getByText } = render(<ProductListScreen />);
 
     await waitFor(() => {
       expect(getByText('testName')).toBeTruthy();
@@ -62,9 +60,7 @@ describe('ProductListScreen', () => {
         }),
     );
 
-    const { UNSAFE_getByType, getByText } = render(
-      <ProductListScreen navigation={{} as any} route={{} as any} />,
-    );
+    const { UNSAFE_getByType, getByText } = render(<ProductListScreen />);
 
     // Wait for initial load to complete
     await waitFor(() => expect(getByText('testName')).toBeTruthy());
@@ -84,9 +80,7 @@ describe('ProductListScreen', () => {
   it('renders empty message when no products are returned', async () => {
     (searchProducts as jest.Mock).mockResolvedValue({ products: [] });
 
-    const { getByText } = render(
-      <ProductListScreen navigation={{} as any} route={{} as any} />,
-    );
+    const { getByText } = render(<ProductListScreen />);
 
     await waitFor(() => {
       expect(
@@ -98,10 +92,30 @@ describe('ProductListScreen', () => {
   it('displays an alert on API error', async () => {
     (searchProducts as jest.Mock).mockResolvedValue({ error: 'API Error' });
 
-    render(<ProductListScreen navigation={{} as any} route={{} as any} />);
+    render(<ProductListScreen />);
 
     await waitFor(() => {
       expect(Alert.alert).toHaveBeenCalledWith('Error', 'API Error');
+    });
+  });
+
+  it('displays an error on catch', async () => {
+    (searchProducts as jest.Mock).mockRejectedValue(Error('Catch Error'));
+
+    render(<ProductListScreen />);
+
+    await waitFor(() => {
+      expect(Alert.alert).toHaveBeenCalledWith('Error', 'Catch Error');
+    });
+  });
+
+  it('displays an unkown error on catch', async () => {
+    (searchProducts as jest.Mock).mockRejectedValue({});
+
+    render(<ProductListScreen />);
+
+    await waitFor(() => {
+      expect(Alert.alert).toHaveBeenCalledWith('Error', 'Uknown Error');
     });
   });
 });

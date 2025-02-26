@@ -1,13 +1,15 @@
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 
 import { useCart } from '../contexts/CartProvider';
 
-export const CartIcon = ({ navigation }: { navigation: any }) => {
+export const CartIcon = () => {
   const { cartItems } = useCart();
 
   const totalQuantity = cartItems.reduce((sum, [_, qty]) => sum + qty, 0);
+  const navigation: any = useNavigation();
 
   return (
     <TouchableOpacity

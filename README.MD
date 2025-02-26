@@ -47,7 +47,7 @@ EXPO_PUBLIC_SHOP_API_KEY=YOUR_API_KEY
 npx expo start
 ```
 
-Note: using the **Biometric Authentication** feature requires a ([development build](https://docs.expo.dev/develop/development-builds/create-a-build/)), alternatively you can use the .IPA or .APK files localted in this project's root directory. 
+Note: using the **Biometric Authentication** feature requires a ([development build](https://docs.expo.dev/develop/development-builds/create-a-build/)), alternatively you can use the .IPA or .APK files located in this project's distribution/ directory. 
 
 #### Running on iOS
 
@@ -68,6 +68,10 @@ npm run test
 then open the html file located in /coverage/lcov-report/index.html
 
 Currently the project has >90% test coverage
+
+### 5️⃣ Deliverables
+
+See the `/distributions` directory to download an .APK or .IPA file
 
 
 ## Conclusion
@@ -90,6 +94,7 @@ I built a mobile app where users can see products from the SHOP.com API. Each ro
 
 #### Project directory:
 
+```
  ┣ 📂 components          # UI components
  ┣ 📂 contexts            # Context providers (e.g., CartProvider)
  ┣ 📂 navigation          # Navigation stack & route definitions
@@ -100,18 +105,20 @@ I built a mobile app where users can see products from the SHOP.com API. Each ro
  ┣ 📂 types              # model definitions (e.g Product, Sku, Image)
  ┣ 📂 utils              # Utility functions
  ┣ 📂 __tests__          # Tests
+ ```
 
 
 ### Limitations 
 
 - No checkout system. Purchases are simulated with an alert.
 - No object caching. Products and Shopping Cart data are not persisted upon restarting the app
-- RootNavigationStack component is missing tests
 - Light mode only
 - I initially wanted to implement a barcode scanning feature using the device's camera, however the API doesn't seem to support this
 
 ### Srengths
 
-- >90% test coveragea
-- Implemented pagination on the ProductsLst
+- Roughly 95% test coverage
+- Implemented pagination for the ProductsLst
 - Debounced Search - Prevents excessive API calls by delaying execution while the user is typing and provides a better user experience without the need for a search button
+- Image caching
+- Shopping cart feature w/ simulated checkout

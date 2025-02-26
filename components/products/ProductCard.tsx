@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 
@@ -8,10 +9,10 @@ import ProductImage from '../common/ProductImage';
 
 interface ProductCardProps {
   product: Product;
-  navigation: any;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, navigation }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const navigation: any = useNavigation();
   const imageURL =
     (product.image?.sizes.length ?? 0) > 0 ? product.image!.sizes[0].url : null;
   const largeImageSize =

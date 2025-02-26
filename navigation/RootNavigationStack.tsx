@@ -16,17 +16,17 @@ const RootNavigationStack = () => (
       <Stack.Screen
         name="Products"
         component={ProductListScreen}
-        options={({ navigation }) => ({
+        options={() => ({
           title: 'Products',
-          headerRight: () => <CartIcon navigation={navigation} />,
+          headerRight: () => <CartIcon />,
         })}
       />
       <Stack.Screen
         name="ProductDetail"
         component={ProductDetailScreen}
-        options={({ navigation }) => ({
+        options={() => ({
           title: '',
-          headerRight: () => <CartIcon navigation={navigation} />,
+          headerRight: () => <CartIcon />,
         })}
       />
       <Stack.Screen

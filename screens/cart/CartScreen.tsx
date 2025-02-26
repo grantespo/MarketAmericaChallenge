@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import * as LocalAuthentication from 'expo-local-authentication';
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native';
@@ -5,10 +6,11 @@ import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native';
 import styles from './styles';
 import CartSkuCard from '../../components/cart/CartSkuCard';
 import { useCart } from '../../contexts/CartProvider';
-import { CartProps } from '../../navigation/RootStackParamList';
 
-export default function CartScreen({ navigation }: CartProps) {
+export default function CartScreen() {
   const { cartItems, clearCart } = useCart();
+
+  const navigation: any = useNavigation();
 
   const totalPrice = cartItems
     .reduce((sum, [sku, qty]) => sum + sku.price * qty, 0)
@@ -23,7 +25,7 @@ export default function CartScreen({ navigation }: CartProps) {
     if (result.success) {
       Alert.alert('Success!', 'Purchase successful!');
       clearCart();
-      navigation.pop();
+      navigation.popToTop();
     } else {
       Alert.alert('Purchase Failed', 'Could not verify your identity.');
     }

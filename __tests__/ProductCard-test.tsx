@@ -6,7 +6,11 @@ import ProductCard from '../components/products/ProductCard';
 
 const mockNavigate = jest.fn();
 
-const navigation = { navigate: mockNavigate };
+jest.mock('@react-navigation/native', () => ({
+  useNavigation: () => ({
+    navigate: mockNavigate,
+  }),
+}));
 
 jest.mock('@expo/vector-icons', () => ({
   Ionicons: 'Ionicons',
@@ -18,9 +22,7 @@ describe('ProductCard Component', () => {
   });
 
   it('renders correctly with images', () => {
-    const { getByText } = render(
-      <ProductCard product={mockProduct} navigation={navigation} />,
-    );
+    const { getByText } = render(<ProductCard product={mockProduct} />);
 
     expect(getByText('testName')).toBeTruthy();
     expect(getByText('This is a short description')).toBeTruthy();
@@ -29,7 +31,7 @@ describe('ProductCard Component', () => {
 
   it('renders correctly without images (sizes array empty)', () => {
     const { getByText } = render(
-      <ProductCard product={mockProductWithoutImage} navigation={navigation} />,
+      <ProductCard product={mockProductWithoutImage} />,
     );
 
     expect(getByText('No Image Product™')).toBeTruthy();
@@ -38,9 +40,7 @@ describe('ProductCard Component', () => {
   });
 
   it('navigates to ProductDetail screen with correct params when pressed', () => {
-    const { getByTestId } = render(
-      <ProductCard product={mockProduct} navigation={navigation} />,
-    );
+    const { getByTestId } = render(<ProductCard product={mockProduct} />);
 
     fireEvent.press(getByTestId('product-card'));
 
@@ -58,7 +58,7 @@ describe('ProductCard Component', () => {
 
   it('handles navigation correctly even without image sizes', () => {
     const { getByTestId } = render(
-      <ProductCard product={mockProductWithoutImage} navigation={navigation} />,
+      <ProductCard product={mockProductWithoutImage} />,
     );
 
     fireEvent.press(getByTestId('product-card'));
