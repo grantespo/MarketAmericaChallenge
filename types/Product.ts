@@ -1,16 +1,14 @@
-import { decodeTrademarkSymbols } from "../utils/decodeTrademarkSymbols";
 import { Image } from "./Image";
-import { Sku } from "./Sku";
 
 export interface Product {
-    id: string;
+    id: number;
     name: string;
     minimumPrice: number;
     minimumPriceString: string;
     maximumPrice: number;
     maximumPriceString: string;
-    shortDescription: string;
-    image: Image,
+    shortDescription?: string;
+    image?: Image,
     reviewData?: {
         count: string,
         rating: number
@@ -24,14 +22,3 @@ export interface Product {
         images: Image[]
     }[]
   }
-
-  export function mapProductOptionsToSkus(product: Product | null): Sku[] {
-    return product?.options ? product.options.map(option => ({
-        id: option.sku,
-        name: decodeTrademarkSymbols(option.name),
-        price: option.price,
-        priceString: option.priceString,
-        inventoryStatus: option.inventoryStatus,
-        images: option.images
-    })) : [];
-}

@@ -22,11 +22,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         //sku exists cart; increment qty
         var existingSkuCartItem = existingCartItems[skuIndex]
         existingCartItems[skuIndex] = [existingSkuCartItem[0], existingSkuCartItem[1] + 1]
-        setCartItems(existingCartItems)
     } else {
         existingCartItems.push([sku, 1])
-        setCartItems([...existingCartItems])
     }
+    setCartItems([...existingCartItems])
   };
 
   const removeFromCart = (sku: Sku, removeAll: Boolean) => {

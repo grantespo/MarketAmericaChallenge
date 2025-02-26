@@ -2,15 +2,15 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import RootNavigationStack from "./navigation/RootNavigationStack";
-import { CartProvider } from "./contexts/CardProvider";
+import { CartProvider } from "./contexts/CartProvider";
 
-export default function App() {
-  return (
-    <>
-      <CartProvider>
-        <RootNavigationStack />
-      </CartProvider>
-      <StatusBar style="auto" />
-    </>
-  );
-}
+const App = () => (
+  <>
+    <CartProvider>
+      <RootNavigationStack />
+    </CartProvider>
+    <StatusBar style="auto" />
+  </>
+);
+
+export default App;

@@ -1,16 +1,33 @@
-Getting Started
+# Shop.com Product Explorer
 
-Create a `.env` file in the root directory and add your api key and base url.
+This is a **React Native/Expo** application built as a technical challenge. The app integrates with the **SHOP.com API** to allow users to search for products, view product details, and manage a shopping cart. It also includes **biometric authentication** (Face ID / Touch ID) for confirming purchases.
 
-```
-EXPO_PUBLIC_SHOP_BASE_URL=https://api2.shop.com/AffiliatePublisherNetwork/v2
-EXPO_PUBLIC_SHOP_API_KEY=your_api_key
-```
+## 📱 Features
 
-To run the project
+- 🔍 **Product Search** – Users can search for products using the **SHOP.com API**.
+- 🛍️ **Product Details** – Displays product descriptions, images, and pricing.
+- 🛒 **Shopping Cart** – Users can add and remove items from the cart.
+- ✅ **Biometric Authentication** – Uses Face ID / Touch ID to confirm purchases.
 
-Run Project
+---
 
-```
-npx expo start
+## 🚀 Getting Started
+
+### 1️⃣ Prerequisites
+
+Ensure you have the following installed:
+
+- [Node.js](https://nodejs.org/)
+- [Expo CLI](https://docs.expo.dev/get-started/installation/)
+- An **Expo account**
+- A **SHOP.com Developer Account** ([Register here](https://developers.shop.com/))
+
+### 2️⃣ Installation
+
+Clone the repository and install dependencies:
+
+```sh
+git clone https://github.com/grantespo/MarketAmericaChallenge
+cd MarketAmericaChallenge
+npm i
 ```

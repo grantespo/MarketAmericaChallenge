@@ -1,5 +1,5 @@
 export type Image = {
-    caption: string,
+    caption?: string,
     sizes: ImageSize[];
 }
 

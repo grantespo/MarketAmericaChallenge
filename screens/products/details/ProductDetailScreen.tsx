@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { getProductDetails } from "../../../services/products";
 import { DetailProps } from "../../../navigation/RootStackParamList";
-import { mapProductOptionsToSkus, Product } from "../../../types/Product";
+import { Product } from "../../../types/Product";
 import { styles } from "./styles";
 import SkuCard from "../../../components/skus/SkuCard";
 import { Sku } from "../../../types/Sku";
@@ -18,6 +18,7 @@ import { calculateDynamicImageHeight } from "../../../utils/calculateDynamicImag
 import ReviewView from "../../../components/products/review/ReviewView";
 import LargeLoadingSpinner from "../../../components/common/LargeLoadingSpinner";
 import ProductImage from "../../../components/common/ProductImage";
+import { mapProductOptionsToSkus } from "../../../utils/mapProductOptionstoSkus";
 
 export default function ProductDetail({ route }: DetailProps) {
   const { id, name, shortDescription, largeImageSize } = route.params;

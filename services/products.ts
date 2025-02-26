@@ -52,9 +52,8 @@ function handleApiError(error: any) {
   console.error("API Error:", error);
 
   let errorMessage = "Something went wrong. Please try again later.";
-
-  if (axios.isAxiosError(error)) {
-      const status = error.response?.status;
+  var status: number = error.response?.status
+  if (status) {
       if (status === 400) {
           errorMessage = "Invalid request. Please check your input.";
       } else if (status === 401) {
@@ -62,8 +61,10 @@ function handleApiError(error: any) {
       } else if (status === 500) {
           errorMessage = "Server error. Please try again later.";
       } else {
-          errorMessage = error.message;
+          errorMessage = "Error Code: " + status.toString();
       }
+  } else if (error.message ) {
+    errorMessage = error.message;
   }
 
   return { error: errorMessage };

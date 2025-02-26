@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useCart } from "../contexts/CardProvider";
+import { useCart } from "../contexts/CartProvider";
 
 export const CartIcon = ({ navigation }: { navigation: any }) => {
   const { cartItems } = useCart();
@@ -10,6 +10,7 @@ export const CartIcon = ({ navigation }: { navigation: any }) => {
 
   return (
     <TouchableOpacity
+      testID="cart-icon"
       onPress={() => navigation.navigate("Cart")}
       style={{ marginRight: 15 }}
     >

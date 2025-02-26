@@ -4,13 +4,13 @@ import { Sku } from "../../types/Sku";
 import { decodeTrademarkSymbols } from "../../utils/decodeTrademarkSymbols";
 import { Ionicons } from "@expo/vector-icons";
 import { styles } from "./styles";
-import { useCart } from "../../contexts/CardProvider";
+import { useCart } from "../../contexts/CartProvider";
 import ProductImage from "../common/ProductImage";
 
 const SkuCard: React.FC<{ sku: Sku }> = ({ sku }) => {
   const {addToCart} = useCart()
-  const skuImage = sku.images.length > 0 
-    ? sku.images[0].sizes[0].url 
+  const skuImage = sku.images.length > 0
+    ? sku.images![0].sizes![0].url 
     : null;
 
     const handleAddToCart = async () => {
@@ -35,6 +35,7 @@ const SkuCard: React.FC<{ sku: Sku }> = ({ sku }) => {
           </View>
           {sku.inventoryStatus === "IN_STOCK" ? (
             <TouchableOpacity 
+              testID="add-button"
               style={{...styles.addButton}} 
               onPress={handleAddToCart}>
                 <Ionicons name="cart" size={20} color="white" />

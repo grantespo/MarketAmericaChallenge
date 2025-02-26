@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { Sku } from "../../types/Sku";
 import { decodeTrademarkSymbols } from "../../utils/decodeTrademarkSymbols";
 import { Ionicons } from "@expo/vector-icons";
-import { useCart } from "../../contexts/CardProvider";
+import { useCart } from "../../contexts/CartProvider";
 import { styles } from "./styles";
 import ProductImage from "../common/ProductImage";
 
@@ -21,7 +21,7 @@ const CartSkuCard: React.FC<{ sku: Sku }> = ({ sku }) => {
 
   return (
     <View style={styles.skuCard}>
-      <View style={styles.imageContainer}>
+      <View testID="product-image" style={styles.imageContainer}>
         <ProductImage skuImage={skuImage}/>
       </View>  
       <View style={styles.skuDetails}>
@@ -35,6 +35,7 @@ const CartSkuCard: React.FC<{ sku: Sku }> = ({ sku }) => {
             </Text>
             <View style={styles.qtyView}>
               <TouchableOpacity
+                testID="minus-button"
                 style={styles.qtyButton}
                 onPress={() => removeFromCart(sku, false)}
                 disabled={quantity < 0}
@@ -42,12 +43,15 @@ const CartSkuCard: React.FC<{ sku: Sku }> = ({ sku }) => {
                 <Ionicons name="remove" size={18} color={quantity === 0 ? "#aaa" : "black"} />
               </TouchableOpacity>
               <Text style={styles.qtyText}>{quantity}</Text>
-              <TouchableOpacity style={styles.qtyButton} onPress={() => addToCart(sku)}>
+              <TouchableOpacity
+                testID="plus-button"
+                style={styles.qtyButton} 
+                onPress={() => addToCart(sku)}>
                 <Ionicons name="add" size={18} color="black" />
               </TouchableOpacity>
             </View>
           </View>
-          <TouchableOpacity style={styles.removeButton} onPress={() => removeFromCart(sku, true)}>
+          <TouchableOpacity testID="remove-all-button" style={styles.removeButton} onPress={() => removeFromCart(sku, true)}>
             <Ionicons name="cart" size={20} color="white" />
             <Text style={styles.removeButtonText}>Remove</Text>
           </TouchableOpacity>

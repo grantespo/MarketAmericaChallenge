@@ -9,12 +9,15 @@ const LargeLoadingSpinner: React.FC<{
     marginTop = 0, 
   }) => {
   return (
-    <View style={{
-      ...loadingSpinnerStyle.loaderContainer, 
-      flex: fullScreen ? 1 : undefined,
-       marginTop: fullScreen ? 0 : marginTop
-       }}>
-        <ActivityIndicator size="large" color="#007AFF" />
+    <View 
+      testID="spinner-container"
+      style={{
+        ...loadingSpinnerStyle.loaderContainer, 
+        flex: fullScreen ? 1 : undefined,
+        marginTop: fullScreen ? 0 : marginTop
+      }}
+      >
+        <ActivityIndicator  testID="spinner-activity-indicator" size="large" color="#007AFF" />
       </View>
   );
 };

@@ -22,13 +22,13 @@ interface ReviewStarsProps {
         <View>
             <View style={styles.ratingContainer}>
                 {[...Array(fullStars)].map((_, index) => (
-                    <Ionicons key={`full-${index}`} name="star" size={20} color="#FFD700" />
+                    <Ionicons testID="full-star" key={`full-${index}`} name="star" size={20} color="#FFD700" />
                 ))}
                 {hasHalfStar && (
-                    <Ionicons key="half" name="star-half" size={20} color="#FFD700" />
+                    <Ionicons testID="half-star" key="half" name="star-half" size={20} color="#FFD700" />
                 )}
                 {[...Array(emptyStars)].map((_, index) => (
-                    <Ionicons key={`empty-${index}`} name="star-outline" size={20} color="#FFD700" />
+                    <Ionicons testID="empty-star" key={`empty-${index}`} name="star-outline" size={20} color="#FFD700" />
                 ))}
                 <Text style={styles.rating}>({reviewData.rating})</Text>
             </View>

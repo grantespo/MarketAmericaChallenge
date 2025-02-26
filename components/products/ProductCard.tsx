@@ -11,10 +11,11 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, navigation }) => {
-    const imageURL = product.image.sizes.length > 0 ? product.image.sizes[0].url : null
-    const largeImageSize = product.image.sizes.length > 0 ? product.image.sizes[product.image.sizes.length - 1] :undefined
+    const imageURL = (product.image?.sizes.length ?? 0) > 0 ? product.image!.sizes[0].url : null
+    const largeImageSize = (product.image?.sizes.length ?? 0) > 0 ? product.image!.sizes[product.image!.sizes.length - 1] : undefined
   return (
     <TouchableOpacity 
+      testID="product-card"
       style={styles.card} 
       onPress={() => navigation.navigate("ProductDetail", { 
         id: product.id,
@@ -26,7 +27,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, navigation }) => {
       <ProductImage skuImage={imageURL}/>
       <View style={styles.details}>
         <Text style={styles.name} numberOfLines={1}>{decodeTrademarkSymbols(product.name)}</Text>
-        <Text style={styles.description} numberOfLines={2}>{decodeTrademarkSymbols(product.shortDescription)}</Text>
+        <Text style={styles.description} numberOfLines={2}>{decodeTrademarkSymbols(product.shortDescription ?? "")}</Text>
         <Text style={styles.price} numberOfLines={1}>{product.minimumPriceString == product.maximumPriceString ? product.maximumPriceString : `${product.minimumPriceString} - ${product.maximumPriceString}`}</Text>
       </View>
     </TouchableOpacity>

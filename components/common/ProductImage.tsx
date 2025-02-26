@@ -21,15 +21,17 @@ const ProductImage: React.FC<ProductImageProps> = ({
     const [hasError, setHasError] = useState(false);
   
     return (
-      <View style={{...productImageStyle.imageContainer, width: width, height}}>
+      <View testID="image-container" style={{...productImageStyle.imageContainer, width: width, height}}>
         {loading && !hasError && (
-          <ActivityIndicator 
+          <ActivityIndicator
+            testID="activity-indicator" 
             size={largeImage ? "large" : "small"} 
             color="#007AFF" 
             style={productImageStyle.loader} 
           />
         )}
         {skuImage != null && !hasError ? (<Image
+          testID="sku-image"
           source={{ uri: skuImage }}
           style={productImageStyle.skuImage}
           contentFit="cover"
@@ -38,7 +40,7 @@ const ProductImage: React.FC<ProductImageProps> = ({
           }}
           onError={(_) => setHasError(true)}
           onLoadEnd={() => setLoading(false)}
-        />) : <Ionicons name="image" size={width} color="#ccc" />
+        />) : <Ionicons testID="placeholder-icon" name="image" size={width} color="#ccc" />
         }
       </View>
     );

@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, FlatList, TouchableOpacity, Alert } from "react-native";
-import { useCart } from "../../contexts/CardProvider";
+import { useCart } from "../../contexts/CartProvider";
 import styles from "./styles";
 import { CartProps } from "../../navigation/RootStackParamList";
 import * as LocalAuthentication from "expo-local-authentication";

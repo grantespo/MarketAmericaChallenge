@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { 
   Alert,
   View, 
@@ -57,6 +57,10 @@ export default function ProductListScreen({ navigation }: ProductListProps) {
     }
   };
 
+  const renderFooter = useCallback(() => (
+    loadingMore ? <ActivityIndicator style={styles.loader} size="small" color="#007AFF" /> : null
+  ), [loadingMore]);
+
   return (
     <View style={styles.container}>
       <SearchBar 
@@ -65,7 +69,9 @@ export default function ProductListScreen({ navigation }: ProductListProps) {
         setQuery={setQuery} />
 
       {loading ? (
-        <LargeLoadingSpinner/>
+        <View testID="large-loading-spinner">
+          <LargeLoadingSpinner/>
+        </View>
       ) : (
         products.length == 0 ? 
         (
@@ -80,7 +86,7 @@ export default function ProductListScreen({ navigation }: ProductListProps) {
           renderItem={({ item }) => <ProductCard product={item} navigation={navigation} />}
           onEndReached={loadMore}
           onEndReachedThreshold={0.5}
-          ListFooterComponent={loadingMore ? <ActivityIndicator style={styles.loader} size="small" color="#007AFF" /> : null}
+          ListFooterComponent={renderFooter}
           removeClippedSubviews={true} // Improves performance
           initialNumToRender={10} // Render only a few items first
           maxToRenderPerBatch={10} // Renders items in batches

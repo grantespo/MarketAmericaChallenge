@@ -11,9 +11,10 @@ type SearchBarProps = {
 
 const SearchBar: React.FC<SearchBarProps> = ({ query, setQuery, placeholder }) => {
   return (
-    <View style={searchBarStyle.searchContainer}>
+    <View testID="search-container" style={searchBarStyle.searchContainer}>
       <Ionicons name="search" size={20} color="#888" style={searchBarStyle.searchIcon} />
       <TextInput 
+        testID="search-input"
         placeholder={placeholder} 
         value={query} 
         onChangeText={setQuery} 
@@ -21,7 +22,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ query, setQuery, placeholder }) =
         style={searchBarStyle.searchInput} 
       />
       {query.length > 0 && (
-        <TouchableOpacity onPress={() => setQuery("")} style={{...searchBarStyle.clearButton, height: Platform.OS === "android" ? 45 : 35}}>
+        <TouchableOpacity testID="clear-button" onPress={() => setQuery("")} style={{...searchBarStyle.clearButton, height: Platform.OS === "android" ? 45 : 35}}>
           <Text style={searchBarStyle.clearText}>✕</Text>
         </TouchableOpacity>
       )}

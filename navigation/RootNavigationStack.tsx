@@ -9,8 +9,7 @@ import CartScreen from "../screens/cart/CartScreen";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-export default function RootNavigationStack() {
-  return (
+const RootNavigationStack = () =>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Products">
         <Stack.Screen
@@ -36,5 +35,6 @@ export default function RootNavigationStack() {
         />
       </Stack.Navigator>
     </NavigationContainer>
-  );
-}
+
+
+export default RootNavigationStack;
