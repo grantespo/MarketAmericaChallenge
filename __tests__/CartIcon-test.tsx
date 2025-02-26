@@ -1,12 +1,12 @@
-import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
+import React from 'react';
+
 import { CartIcon } from '../components/CartIcon';
 import { useCart } from '../contexts/CartProvider';
 
 jest.mock('@expo/vector-icons', () => ({
-    Ionicons: 'Ionicons',
+  Ionicons: 'Ionicons',
 }));
-  
 
 jest.mock('../contexts/CartProvider', () => ({
   useCart: jest.fn(),
@@ -44,9 +44,7 @@ describe('CartIcon', () => {
   it('calls navigation.navigate when pressed', () => {
     (useCart as jest.Mock).mockReturnValue({ cartItems: [] });
 
-    const { getByTestId } = render(
-      <CartIcon navigation={mockNavigation} />
-    );
+    const { getByTestId } = render(<CartIcon navigation={mockNavigation} />);
 
     fireEvent.press(getByTestId('cart-icon'));
 

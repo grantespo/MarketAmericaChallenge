@@ -1,7 +1,8 @@
-import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { useCart } from "../contexts/CartProvider";
+import { Ionicons } from '@expo/vector-icons';
+import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+
+import { useCart } from '../contexts/CartProvider';
 
 export const CartIcon = ({ navigation }: { navigation: any }) => {
   const { cartItems } = useCart();
@@ -11,7 +12,7 @@ export const CartIcon = ({ navigation }: { navigation: any }) => {
   return (
     <TouchableOpacity
       testID="cart-icon"
-      onPress={() => navigation.navigate("Cart")}
+      onPress={() => navigation.navigate('Cart')}
       style={{ marginRight: 15 }}
     >
       <View>
@@ -19,18 +20,18 @@ export const CartIcon = ({ navigation }: { navigation: any }) => {
         {cartItems.length > 0 && (
           <View
             style={{
-              position: "absolute",
+              position: 'absolute',
               right: -5,
               top: -5,
-              backgroundColor: "red",
+              backgroundColor: 'red',
               borderRadius: 10,
               width: 18,
               height: 18,
-              justifyContent: "center",
-              alignItems: "center",
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
-            <Text style={{ color: "white", fontSize: 12, fontWeight: "bold" }}>
+            <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>
               {totalQuantity}
             </Text>
           </View>

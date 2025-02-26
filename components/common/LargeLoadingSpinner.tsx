@@ -1,25 +1,27 @@
-import { ActivityIndicator, View } from "react-native";
-import {loadingSpinnerStyle} from "./styles";
+import { ActivityIndicator, View } from 'react-native';
+
+import { loadingSpinnerStyle } from './styles';
 
 const LargeLoadingSpinner: React.FC<{
-  fullScreen?: boolean, 
-  marginTop?: number, 
-}> = ({
-    fullScreen = true, 
-    marginTop = 0, 
-  }) => {
+  fullScreen?: boolean;
+  marginTop?: number;
+}> = ({ fullScreen = true, marginTop = 0 }) => {
   return (
-    <View 
+    <View
       testID="spinner-container"
       style={{
-        ...loadingSpinnerStyle.loaderContainer, 
+        ...loadingSpinnerStyle.loaderContainer,
         flex: fullScreen ? 1 : undefined,
-        marginTop: fullScreen ? 0 : marginTop
+        marginTop: fullScreen ? 0 : marginTop,
       }}
-      >
-        <ActivityIndicator  testID="spinner-activity-indicator" size="large" color="#007AFF" />
-      </View>
+    >
+      <ActivityIndicator
+        testID="spinner-activity-indicator"
+        size="large"
+        color="#007AFF"
+      />
+    </View>
   );
 };
 
-export default LargeLoadingSpinner
+export default LargeLoadingSpinner;

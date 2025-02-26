@@ -1,22 +1,17 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { 
-  Alert,
-  View, 
-  FlatList, 
-  ActivityIndicator, 
-  Text
-} from "react-native";
-import { searchProducts } from "../../services/products";
-import ProductCard from "../../components/products/ProductCard";
-import { styles } from "./styles";
-import { Product } from "../../types/Product";
-import { ProductListProps } from "../../navigation/RootStackParamList";
-import { useDebounce } from "../../utils/useDebounce";
-import LargeLoadingSpinner from "../../components/common/LargeLoadingSpinner";
-import SearchBar from "../../components/common/SearchBar";
+import React, { useState, useEffect, useCallback } from 'react';
+import { Alert, View, FlatList, ActivityIndicator, Text } from 'react-native';
+
+import { styles } from './styles';
+import LargeLoadingSpinner from '../../components/common/LargeLoadingSpinner';
+import SearchBar from '../../components/common/SearchBar';
+import ProductCard from '../../components/products/ProductCard';
+import { ProductListProps } from '../../navigation/RootStackParamList';
+import { searchProducts } from '../../services/products';
+import { Product } from '../../types/Product';
+import { useDebounce } from '../../utils/useDebounce';
 
 export default function ProductListScreen({ navigation }: ProductListProps) {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, 500);
   const [products, setProducts] = useState<Product[]>([]);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -33,57 +28,63 @@ export default function ProductListScreen({ navigation }: ProductListProps) {
     if (reset) {
       setLoading(true);
     } else {
-      setLoadingMore(true)
+      setLoadingMore(true);
     }
-    
+
     const results = await searchProducts(debouncedQuery, pageNumber);
     if (results) {
       if (results.error) {
-        Alert.alert("Error", results.error);
+        Alert.alert('Error', results.error);
       } else if (results.products) {
-        setProducts(reset ? results.products : [...products, ...results.products]);
+        setProducts(
+          reset ? results.products : [...products, ...results.products],
+        );
         setHasMore(results.products.length > 0);
       }
     }
-    
+
     setLoadingMore(false);
     setLoading(false);
   };
 
   const loadMore = () => {
     if (!loadingMore && hasMore) {
-      setPage(prev => prev + 1);
+      setPage((prev) => prev + 1);
       fetchProducts(page + 1);
     }
   };
 
-  const renderFooter = useCallback(() => (
-    loadingMore ? <ActivityIndicator style={styles.loader} size="small" color="#007AFF" /> : null
-  ), [loadingMore]);
+  const renderFooter = useCallback(
+    () =>
+      loadingMore ? (
+        <ActivityIndicator style={styles.loader} size="small" color="#007AFF" />
+      ) : null,
+    [loadingMore],
+  );
 
   return (
     <View style={styles.container}>
-      <SearchBar 
-        query={query} 
+      <SearchBar
+        query={query}
         placeholder="Search for products..."
-        setQuery={setQuery} />
+        setQuery={setQuery}
+      />
 
       {loading ? (
-        <View testID="large-loading-spinner">
-          <LargeLoadingSpinner/>
+        <LargeLoadingSpinner />
+      ) : products.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>
+            No products found. Please try a different search query.
+          </Text>
         </View>
       ) : (
-        products.length == 0 ? 
-        (
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>No products found. Please try a different search query.</Text>
-        </View>
-        )
-        :
-        (<FlatList
+        <FlatList
           data={products}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <ProductCard product={item} navigation={navigation} />}
+          renderItem={({ item }) => (
+            <ProductCard product={item} navigation={navigation} />
+          )}
           onEndReached={loadMore}
           onEndReachedThreshold={0.5}
           ListFooterComponent={renderFooter}
@@ -92,7 +93,7 @@ export default function ProductListScreen({ navigation }: ProductListProps) {
           maxToRenderPerBatch={10} // Renders items in batches
           windowSize={10} // Keeps fewer items in memory
           updateCellsBatchingPeriod={100} // Reduces CPU load
-        />)
+        />
       )}
     </View>
   );

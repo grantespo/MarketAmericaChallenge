@@ -1,8 +1,9 @@
 // App.tsx
-import React from "react";
-import { StatusBar } from "expo-status-bar";
-import RootNavigationStack from "./navigation/RootNavigationStack";
-import { CartProvider } from "./contexts/CartProvider";
+import { StatusBar } from 'expo-status-bar';
+import React from 'react';
+
+import { CartProvider } from './contexts/CartProvider';
+import RootNavigationStack from './navigation/RootNavigationStack';
 
 const App = () => (
   <>

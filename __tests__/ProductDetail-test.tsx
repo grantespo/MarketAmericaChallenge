@@ -1,17 +1,19 @@
-import React from 'react';
 import { render, waitFor } from '@testing-library/react-native';
 import { FlatList, Alert } from 'react-native';
+
+import { mockProduct } from '../__mocks__/MockProduct';
 import ProductDetail from '../screens/products/details/ProductDetailScreen';
 import { getProductDetails } from '../services/products';
 import { mapProductOptionsToSkus } from '../utils/mapProductOptionstoSkus';
-import { mockProduct } from '../__mocks__/MockProduct';
 
 jest.mock('@expo/vector-icons', () => ({
-    Ionicons: 'Ionicons',
+  Ionicons: 'Ionicons',
 }));
 
 jest.mock('../services/products', () => ({ getProductDetails: jest.fn() }));
-jest.mock('../utils/mapProductOptionstoSkus', () => ({ mapProductOptionsToSkus: jest.fn() }));
+jest.mock('../utils/mapProductOptionstoSkus', () => ({
+  mapProductOptionsToSkus: jest.fn(),
+}));
 jest.spyOn(Alert, 'alert');
 
 jest.mock('../components/skus/SkuCard', () => {
@@ -51,13 +53,15 @@ describe('ProductDetail', () => {
 
   it('renders SkuCard components correctly and tests FlatList', async () => {
     const { UNSAFE_getByType } = render(
-      <ProductDetail route={mockRoute} navigation={{} as any} />
+      <ProductDetail route={mockRoute} navigation={{} as any} />,
     );
 
     // Wait explicitly for SkuCard to render
     await waitFor(() => {
       expect(Alert.alert).not.toHaveBeenCalled();
-      expect(require('../components/skus/SkuCard').default).toHaveBeenCalledTimes(2);
+      expect(
+        require('../components/skus/SkuCard').default,
+      ).toHaveBeenCalledTimes(2);
     });
 
     // Explicitly verify FlatList keyExtractor/renderItem

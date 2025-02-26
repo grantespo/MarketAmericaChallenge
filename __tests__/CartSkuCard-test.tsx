@@ -1,15 +1,16 @@
-import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import { useCart } from '../contexts/CartProvider';
+import React from 'react';
+
 import CartSkuCard from '../components/cart/CartSkuCard';
+import { useCart } from '../contexts/CartProvider';
 
 jest.mock('@expo/vector-icons', () => ({
   Ionicons: () => null,
 }));
 
 jest.mock('../contexts/CartProvider', () => ({
-    useCart: jest.fn(),
-  }));
+  useCart: jest.fn(),
+}));
 
 jest.mock('../components/common/ProductImage', () => 'ProductImage');
 
@@ -19,7 +20,9 @@ const mockSku = {
   price: 10.0,
   priceString: '$10.00',
   inventoryStatus: 'In Stock',
-  images: [{ sizes: [{ url: 'testimage.png', width: 100, height: 100 }], caption: '' }],
+  images: [
+    { sizes: [{ url: 'testimage.png', width: 100, height: 100 }], caption: '' },
+  ],
 };
 
 const mockAddToCart = jest.fn();
@@ -55,13 +58,13 @@ describe('CartSkuCard', () => {
     fireEvent.press(getByTestId('minus-button'));
     expect(mockRemoveFromCart).toHaveBeenCalledWith(mockSku, false);
   });
-  
+
   it('calls addToCart on plus press', () => {
     const { getByTestId } = render(<CartSkuCard sku={mockSku} />);
     fireEvent.press(getByTestId('plus-button'));
     expect(mockAddToCart).toHaveBeenCalledWith(mockSku);
   });
-  
+
   it('calls removeFromCart (true) on remove press', () => {
     const { getByTestId } = render(<CartSkuCard sku={mockSku} />);
     fireEvent.press(getByTestId('remove-all-button'));

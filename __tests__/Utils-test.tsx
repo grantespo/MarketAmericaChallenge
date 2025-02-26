@@ -1,11 +1,12 @@
-import { renderHook, act } from '@testing-library/react-native'
+import { renderHook, act } from '@testing-library/react-native';
+
+import { mockImage } from '../__mocks__/MockImage';
+import { mockProduct } from '../__mocks__/MockProduct';
+import { Sku } from '../types/Sku';
 import { calculateDynamicImageHeight } from '../utils/calculateDynamicImageHeight';
 import { decodeTrademarkSymbols } from '../utils/decodeTrademarkSymbols';
-import { useDebounce } from '../utils/useDebounce';
-import { Sku } from '../types/Sku';
 import { mapProductOptionsToSkus } from '../utils/mapProductOptionstoSkus';
-import { mockProduct } from '../__mocks__/MockProduct';
-import { mockImage } from '../__mocks__/MockImage';
+import { useDebounce } from '../utils/useDebounce';
 
 describe('calculateDynamicImageHeight', () => {
   test('calculates correct image height maintaining aspect ratio', () => {
@@ -28,7 +29,9 @@ describe('decodeTrademarkSymbols', () => {
   });
 
   test('replaces both symbols correctly in a single string', () => {
-    expect(decodeTrademarkSymbols('Test&trade; & Example&reg;')).toBe('Test™ & Example®');
+    expect(decodeTrademarkSymbols('Test&trade; & Example&reg;')).toBe(
+      'Test™ & Example®',
+    );
   });
 
   test('returns original string if no symbols present', () => {
@@ -42,7 +45,7 @@ describe('useDebounce hook', () => {
   test('debounces value after delay', () => {
     const { result, rerender } = renderHook(
       ({ value, delay }) => useDebounce(value, delay),
-      { initialProps: { value: 'initial', delay: 500 } }
+      { initialProps: { value: 'initial', delay: 500 } },
     );
 
     expect(result.current).toBe('initial');
@@ -63,7 +66,7 @@ describe('useDebounce hook', () => {
   test('handles rapid value changes', () => {
     const { result, rerender } = renderHook(
       ({ value, delay }) => useDebounce(value, delay),
-      { initialProps: { value: 'first', delay: 300 } }
+      { initialProps: { value: 'first', delay: 300 } },
     );
 
     rerender({ value: 'second', delay: 300 });
@@ -92,7 +95,7 @@ describe('mapProductOptionsToSkus', () => {
         price: 19.99,
         priceString: '$19.99',
         inventoryStatus: 'In Stock',
-        images: [mockImage, mockImage]
+        images: [mockImage, mockImage],
       },
       {
         id: '456',
@@ -100,8 +103,8 @@ describe('mapProductOptionsToSkus', () => {
         price: 29.99,
         priceString: '$29.99',
         inventoryStatus: 'Out of Stock',
-        images: []
-      }
+        images: [],
+      },
     ];
 
     expect(mapProductOptionsToSkus(mockProduct)).toEqual(expectedSkus);

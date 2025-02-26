@@ -1,5 +1,6 @@
-import React from 'react';
 import { render } from '@testing-library/react-native';
+import React from 'react';
+
 import LargeLoadingSpinner from '../components/common/LargeLoadingSpinner';
 
 describe('LargeLoadingSpinner', () => {
@@ -8,7 +9,7 @@ describe('LargeLoadingSpinner', () => {
     const container = getByTestId('spinner-container');
 
     expect(container.props.style).toEqual(
-      expect.objectContaining({ flex: 1, marginTop: 0 })
+      expect.objectContaining({ flex: 1, marginTop: 0 }),
     );
 
     const spinner = getByTestId('spinner-activity-indicator');
@@ -18,12 +19,12 @@ describe('LargeLoadingSpinner', () => {
 
   it('renders without fullScreen and custom marginTop', () => {
     const { getByTestId } = render(
-      <LargeLoadingSpinner fullScreen={false} marginTop={20} />
+      <LargeLoadingSpinner fullScreen={false} marginTop={20} />,
     );
     const container = getByTestId('spinner-container');
 
     expect(container.props.style).toEqual(
-      expect.objectContaining({ flex: undefined, marginTop: 20 })
+      expect.objectContaining({ flex: undefined, marginTop: 20 }),
     );
   });
 });
