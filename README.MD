@@ -47,7 +47,7 @@ EXPO_PUBLIC_SHOP_API_KEY=YOUR_API_KEY
 npx expo start
 ```
 
-Note: using the **Biometric Authentication** feature requires a ([development build](https://docs.expo.dev/develop/development-builds/create-a-build/)), alternatively you can use the .IPA or .APK files located in this project's distribution/ directory. 
+Note: using the **Biometric Authentication** feature requires a ([development build](https://docs.expo.dev/develop/development-builds/create-a-build/)), alternatively you can use the .IPA or .APK files which are published as a releases for this repo.
 
 #### Running on iOS
 
@@ -71,7 +71,7 @@ Currently the project has >90% test coverage
 
 ### 5️⃣ Deliverables
 
-See the `/distributions` directory to download an .APK or .IPA file
+See the `1.0.0` release on this repo to download an .APK or .IPA file
 
 
 ## Conclusion
@@ -79,7 +79,7 @@ See the `/distributions` directory to download an .APK or .IPA file
 
 ### What I did
 
-I built a mobile app where users can see products from the SHOP.com API. Each row shows the product image, name description and price range. The user can scroll the list infinitely and search by term. Then, the user can tap a row to view more details about the product. The details screen shows a large image, description, name, reviews, and a list of SKUs for the product. Each SKU shows an image, name, price, stock status (e.g "In Stock"), and a button to add to cart. After the user adds one or many items to their cart, they can tap the cart iconbutton on the rop-right of the screen to view the SKUs they added. On the cart screen, the user has the option to adjust to decrement/or increment the Qty. Then, they click click the "Buy" button at the bottom which will authenticate using the device's native **Biometric Authentication** capabilities. However, a real purchase does not happen. If the authentication is success, then a success alert shows and the cart gets cleared.
+I built a mobile app where users can see products from the SHOP.com API. Each row shows the product image, name, description, and price range. The user can scroll the list infinitely and search by term. Then, the user can tap a row to view more details about the product. The details screen shows a large image, description, name, reviews, and a list of SKUs for the product. Each SKU shows an image, name, price, stock status (e.g "In Stock"), and a button to add to cart. After the user adds one or many items to their cart, they can tap the cart iconbutton on the rop-right of the screen to view the SKUs they added. On the cart screen, the user has the option to adjust to decrement/or increment the Qty. Then, they click click the "Buy" button at the bottom which will authenticate using the device's native **Biometric Authentication** capabilities. However, a real purchase does not happen. If the authentication is success, then a success alert shows and the cart gets cleared.
 
 ### How I did it
 
